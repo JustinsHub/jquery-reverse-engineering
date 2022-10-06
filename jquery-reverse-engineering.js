@@ -28,23 +28,49 @@ class ReverseJQuery {
     
 
     //parameter takes in id
-    ajax(url, data) {
-        fetch(url, data)
-        .then(res=> {
-            return res.json()
-        })
-        .catch((error) => console.log(error))
+    ajax(option) {
+        const {url, data, success} = option
+        let params = ""
+        const res = Object.entries(data);
+
+        for(let i = 0; i < res.length; i++){
+            const [key, value] = res[i]
+            if(i===res.length - 1){
+                params += `${key}=${value}`
+            }else {
+                params += `${key}=${value}&`
+            }
+        }
+
+        fetch(`${url}/${params}`)
+        .then(res => res.json())
+        .then(success)
+
+
+        // fetch(url, data)
+        // .then(res=> {
+        //     return res.json()
+        // })
+        // .catch((error) => console.log(error))
     }
 }
-
 
 const $$ = (element) => {
     return new ReverseJQuery(element)
 }
 
 // let handleSubmit = (e) => {
-//     console.log('test')
-// }
-
-// $$("btn").html('test').on('click', handleSubmit)
-
+    //     console.log('test')
+    // }
+    
+    // $$("btn").html('test').on('click', handleSubmit)
+    
+// $$.ajax({
+//     url: "url",
+//     data: {
+//         id: 1
+//     },
+//     success: (res) => {
+//         console.log(res)
+//     }
+// })
